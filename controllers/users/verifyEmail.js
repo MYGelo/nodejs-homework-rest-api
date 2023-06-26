@@ -7,8 +7,7 @@ const verifyEmail = async (req, res, next) => {
     await User.findByIdAndUpdate(user._id, {
       verify: true,
       verificationToken: null,
-    }
-    );
+    });
 
     if (!user) {
       console.log('error!  !user in verifyEmail');

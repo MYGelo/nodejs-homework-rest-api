@@ -18,7 +18,7 @@ const sendEmail1 = async data => {
     from: 'mygelo@meta.ua',
     ...data,
   };
-  console.log(`NM :`, emailOP);
+  console.log(`emailOP in nodemailer :`, emailOP);
   try {
     await transporter.sendMail(emailOP);
   } catch (error) {
