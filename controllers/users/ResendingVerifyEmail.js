@@ -26,8 +26,8 @@ const resendingVerifyEmail = async (req, res, next) => {
       subject: 'resendingVerifyEmail',
       text: `<a target="_blank" href="http://localhost:3000/api/users/verify/${verificationToken}">Confirm email</a>`,
     };
-   
-    sendEmail1(emailOP);
+
+    await sendEmail1(emailOP);
     res.json({ message: 'Verification email sent' });
   } catch (error) {
     console.log(`Error in "resendingVerifyEmail"!!!`);

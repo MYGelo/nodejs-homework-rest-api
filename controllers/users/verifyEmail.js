@@ -1,8 +1,10 @@
 const User = require('../../models/user');
 
 const verifyEmail = async (req, res, next) => {
-  const { verificationToken } = req.params;
-  const user = await User.findOne({ verificationToken });
+  const verificationToken = req.params;
+
+  const user = await User.findOne(verificationToken);
+  console.log(`user`, user);
   try {
     await User.findByIdAndUpdate(user._id, {
       verify: true,

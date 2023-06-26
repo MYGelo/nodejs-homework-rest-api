@@ -24,10 +24,10 @@ const register = async (req, res, next) => {
 
     const emailOP = {
       to: newUser.email,
-      subject: 'Verification email',
+      subject: 'Verify your account',
       text: `<a target="_blank" href="http://localhost:3000/api/users/verify/${verificationToken}">Confirm email</a>`,
     };
-    sendEmail1(emailOP);
+    await sendEmail1(emailOP);
 
     res.status(201).json({
       user: {
