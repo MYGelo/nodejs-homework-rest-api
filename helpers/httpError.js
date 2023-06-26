@@ -14,6 +14,7 @@ const HttpError = (error, data, next) => {
   console.log(`code error`, code);
   const status = name === 'MongoServerError' && code === 11000 ? 409 : 400;
   console.log(`status`, status);
+  console.log(`error message HttpError: `,error.message)
 
   error.status = status;
   // next();

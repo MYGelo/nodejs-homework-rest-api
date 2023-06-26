@@ -36,4 +36,4 @@ const sendEmail = function (error, data, response) {
 
 api.emailsPost(emailEE, sendEmail);
 
-module.exports = sendEmail;
+// module.exports = sendEmail;
