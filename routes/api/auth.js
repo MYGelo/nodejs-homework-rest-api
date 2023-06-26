@@ -9,6 +9,8 @@ const login = require('../../controllers/users/login');
 const register = require('../../controllers/users/register');
 const updateAvatarUser = require('../../controllers/users/updateAvtar');
 const upload = require('../../middlewares/upload');
+const verifyEmail = require('../../controllers/users/verifyEmail');
+const resendingVerifyEmail = require('../../controllers/users/ResendingVerifyEmail');
 
 const router = express.Router();
 
@@ -18,6 +20,8 @@ router.post('/login', validateAuth(schemas.loginSchema), login);
 router.post('/logout', authenticate, logout);
 router.get('/current', authenticate, currentUser);
 
-router.patch('/avatars', upload.single("avatar"), authenticate, updateAvatarUser);
+router.patch('/avatars', upload.single('avatar'), authenticate, updateAvatarUser);
 
+router.get('/verify/:verificationtoken', verifyEmail);
+router.post('/verify', resendingVerifyEmail);
 module.exports = router;

@@ -13,6 +13,11 @@ const login = async (req, res, next) => {
       console.log(`401 error : !user `);
       throw res.status(401).json({ message: 'Email or pass invalid' });
     }
+    console.log(`user.verify`, user.verify);
+    if (!user.verify) {
+      console.log(`400 error : user.verify `);
+      throw res.status(400).json({ message: 'Verification has already been passed' });
+    }
     const passwoedCompare = await bcrypt.compare(password, user.password);
     if (!passwoedCompare) {
       console.log(`401 error : !passwoedCompar`);
@@ -25,7 +30,7 @@ const login = async (req, res, next) => {
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '23h' });
     await User.findByIdAndUpdate(user._id, { token });
 
-    res.status(200).json({ token, user: { user: user.email, subscription: user.subscription} });
+    res.status(200).json({ token, user: { user: user.email, subscription: user.subscription } });
   } catch (error) {
     next(error);
   }

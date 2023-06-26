@@ -1,6 +1,8 @@
 const User = require('../../models/user');
 const bcrypt = require('bcrypt');
 const gravatar = require('gravatar');
+const { nanoid } = require('nanoid');
+const sendEmail1 = require('../../helpers/nodemailer');
 
 const register = async (req, res, next) => {
   try {
@@ -9,24 +11,34 @@ const register = async (req, res, next) => {
     if (user) {
       throw res.status(409).json({ message: 'Email in use' });
     }
+    const verificationToken = nanoid();
     const avatarURL = gravatar.url(email);
     const hashPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await User.create({ ...req.body, avatarURL ,password: hashPassword });
+    const newUser = await User.create({
+      ...req.body,
+      avatarURL,
+      password: hashPassword,
+      verificationToken: verificationToken,
+    });
 
-    console.log(`newUser`, newUser);
-    console.log(`user`, req.body.name);
-    console.log(`avatar===========`, avatarURL)
+    const emailOP = {
+      to: newUser.email,
+      subject: 'Verify your account',
+      text: `<a target="_blank" href="http://localhost:3000/api/users/verify/${verificationToken}">Confirm email</a>`,
+    };
+    await sendEmail1(emailOP);
 
     res.status(201).json({
       user: {
         email: newUser.email,
         subscription: newUser.subscription,
         avatarURL,
+        verificationToken,
       },
     });
   } catch (error) {
-    console.log(error)
+    console.log(`Error in register!!!`, error);
     next(error);
   }
 };
